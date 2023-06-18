@@ -1,0 +1,59 @@
+{% extends 'blog/base.html' %}
+{% load bootstrap_icons %}
+{% load static %}
+{% block title %}
+    Post Details
+{% endblock %}
+
+{% block content %}
+<!--    <script>-->
+<!--        const beamsClient = new PusherPushNotifications.Client({-->
+<!--        instanceId: "32cafa74-0ea6-4b97-94b5-2e1abbeb1095",-->
+<!--        });-->
+<!--        beamsClient-->
+<!--          .start()-->
+<!--          .then((beamsClient) => beamsClient.getDeviceId())-->
+<!--          .then((deviceId) =>-->
+<!--            console.log("Successfully registered with Beams. Device ID:", deviceId)-->
+<!--          )-->
+<!--          .then(() => beamsClient.addDeviceInterest("hello"))-->
+<!--          .then(() => beamsClient.getDeviceInterests())-->
+<!--          .then((interests) => console.log("Current interests:", interests))-->
+<!--          .catch(console.error);-->
+<!--    </script>-->
+    {% for post in posts %}
+        <li class="list-group-item"><a style="text-decoration: none;color: black; text-transform: capitalize;" href="{% url 'blog:details' slug=post.slug %}?summarized=False ">{{post.title}}</a></li>
+
+    {% endfor %}
+    <div class="dropdown p-2">
+      <button class="btn btn-secondary dropdown-toggle float-right" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {% bs_icon 'plus-circle' %}
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'blog:create' %}">Create Post</a></li>
+        <li><a class="dropdown-item" href="{% url 'blog:generate' %}">Generate Post</a></li>
+        </ul>
+    </div>
+
+
+{% endblock content %}
+
+{% block footer %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if posts.has_previous %}
+                <a href="?page=1">&laquo; first </a>
+                <a href="?page={{ posts.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+            </span>
+
+            {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}">next</a>
+                <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock footer %}

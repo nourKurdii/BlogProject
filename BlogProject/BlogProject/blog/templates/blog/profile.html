@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}"/>
+    <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
+<!--    <script>-->
+<!--        o-->
+<!--        list_of_udser = '{{ list }}'-->
+<!--        list_of_user.forEach((b) => {subtoch(b)})-->
+
+<!--        function subscribeToChannel(author){-->
+<!--            var pusher = new Pusher('0e91478bc0e40259fd3f');-->
+<!--            var channel = pusher.subscribe(author);-->
+<!--            channel.bind('new-post', (data) => {-->
+<!--              alert('New Post')-->
+<!--            });-->
+<!--        }-->
+<!--        function unsubscribeChannel(author){-->
+<!--            var pusher = new Pusher('0e91478bc0e40259fd3f');-->
+<!--            var channel = pusher.unsubscribe(author);-->
+<!--        }-->
+<!--    </script>-->
+</head>
+<body>
+<div class="container mt-5 d-flex justify-content-center">
+
+            <div class="card p-3">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="image">
+                <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" class="rounded" width="155" >
+                </div>
+
+                <div class="ml-3 w-100">
+
+                   <h4 class="mb-0 mt-0">{{username}}</h4>
+                   <span>{{email}}</span>
+
+                   <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
+
+                    <div class="d-flex flex-column">
+
+                        <span class="articles">Posts</span>
+                        <span class="number1">{{posts}}</span>
+
+                    </div>
+
+                    <div class="d-flex flex-column">
+
+                        <span class="followers">Subscribers</span>
+                        <span class="number2">{{Subscribers}}</span>
+
+                    </div>
+
+
+                    <div class="d-flex flex-column">
+
+                        <span class="rating">Subscriptions</span>
+                        <span class="number3">{{Subscriptions}}</span>
+
+                    </div>
+
+                   </div>
+                   {% if user != request.user %}
+
+                    <form action="{% url 'blog:subscribe' user %}" method="post">
+                        {% csrf_token %}
+                        {% if followed %}
+                            <div class="button mt-2 d-flex flex-row align-items-center ">
+                                <button  class="btn btn-sm btn-dark w-100 ml-2">Unsubscribe</button>
+                            </div>
+                        {% else %}
+                            <div class="button mt-2 d-flex flex-row align-items-center ">
+                                <button  class="btn btn-sm btn-dark w-100 ml-2">Subscribe</button>
+                            </div>
+                        {% endif %}
+                    </form>
+
+                   {% endif %}
+
+
+                </div>
+
+
+                </div>
+
+            </div>
+
+         </div>
+</body>
+</html>

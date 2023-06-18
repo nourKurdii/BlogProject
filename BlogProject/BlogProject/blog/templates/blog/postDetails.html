@@ -1,0 +1,66 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Post Details
+{% endblock %}
+
+{% block content %}
+     <div>
+
+        <h3 style="text-transform: capitalize;">{{ post.title }}</h3>
+        <h5>Author : <a href="{% url 'blog:profile' post.author %}">{{post.author}}</a></h5>
+        {% if post.author == request.user %}
+            <ul class="list-group list-group-horizontal-sm" style="list-style-type: none; ">
+                <li class="p-1" ><a href="{% url 'blog:post_edit' post.slug %}" >Edit Post</a></li>
+                <li class="p-1"><a href="{% url 'blog:post_fix' post.slug %}" >Fix Post</a></li>
+            </ul>
+        {% endif %}
+         <p >{{body}}</p>
+         {% if summarized %}
+            <p><a class="btn btn-dark" href="{% url 'blog:details' post.slug  %}?summarized=False" >unsummarize Post</a></p>
+         {% else %}
+            <p><a class="btn btn-dark" href="{% url 'blog:details' post.slug  %}?summarized=True" >summarize Post</a></p>
+         {% endif %}
+        <p>Created time: {{ post.created }}</p>
+        <p>Published time: {{ post.publish }}</p>
+         <form action="{% url 'blog:like_post' post.slug %}" method="post">
+                 {% csrf_token %}
+                 {% if liked %}
+                    <button type="submit" , name="like" , value='like', class="btn btn-light"><span class="bi bi-hand-thumbs-up-fill"></span></button>
+                    <button type="submit" , name="dislike", value="dislike", disabled="true" class="btn btn-light"><span class="bi bi-hand-thumbs-down"></span></button>
+                 {% else %}
+                    {% if disliked %}
+                        <button type="submit", name="like" , disabled="true" value='like', class="btn btn-light"><span class="bi bi-hand-thumbs-up"></span></button>
+                        <button type="submit" , name="dislike", value="dislike" , class="btn btn-light"><span class="bi bi-hand-thumbs-down-fill"></span></button>
+                    {% else %}
+                        <button type="submit", name="like" , value='like', class="btn btn-light"><span class="bi bi-hand-thumbs-up"></span></button>
+                        <button type="submit" , name="dislike", value="dislike" , class="btn btn-light"><span class="bi bi-hand-thumbs-down"></span></button>
+                    {% endif %}
+                 {% endif %}
+                 <br>
+                 {{likes}} likes {{dislikes}} dislikes
+          </form>
+
+         <h3>Comments</h3>
+         {% for comment in comments %}
+             <p class="p-2" >{{comment.body}} <br>
+                 written by : {{comment.name}}, {{comment.email}}
+             </p>
+         {% endfor %}
+
+         <h3>Add Comment</h3>
+         <form method="post" class="d-flex flex-column" >
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                  <div class="form-group; p-2">
+                    <button type="submit" class="btn btn-dark">Submit</button>
+                  </div>
+
+         </form>
+
+    </div>
+
+{% endblock content %}
+
+
